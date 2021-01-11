@@ -1,6 +1,7 @@
 package com.portfolio.googlemaps;
 
 import android.os.Bundle;
+import android.widget.Button;
 
 import androidx.fragment.app.FragmentActivity;
 
@@ -8,12 +9,16 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import static com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_AZURE;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private Button mButton; // startsLocationService
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +43,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        // Convert map from plain to satellite:
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
+        // Creating new location:
+        LatLng spacexHeadquarters = new LatLng(33.92083242989701, -118.32827930186276);
+
+        // Create a new camera
+        mMap.addMarker(new MarkerOptions().position(spacexHeadquarters).title("SpaceX Headquarters").icon(BitmapDescriptorFactory.defaultMarker(HUE_AZURE)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(spacexHeadquarters,10));
+
     }
 }
